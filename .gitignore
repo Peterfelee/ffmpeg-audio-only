@@ -1,0 +1,4 @@
+.upstream/
+Artifacts/
+*.xcframework
+.DS_Store
