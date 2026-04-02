@@ -2,17 +2,15 @@
 
 用于在 CocoaPods 中分发 **FFmpegKit iOS xcframework** 的 podspec 仓库（不包含二进制本身，二进制通过 `s.source` 的 HTTP zip 拉取）。
 
-## 推送到本仓库
+## 与 AINoteTaker 工程同步
 
-在本地执行（将路径换成你本机 `AINoteTaker` 工程目录）：
+主工程内有一份镜像目录 `ffmpeg-audio-only-publish/`（与本仓库根目录 podspec 应对齐）。更新流程：
 
 ```bash
-cd /path/to/clone/of/ffmpeg-audio-only
+# 在 AINoteTaker 里改好 podspec 后复制到本仓库 clone，再 push：
 cp /path/to/AINoteTaker/ffmpeg-audio-only-publish/AinoteFFmpegKitIOS.podspec .
-# 按需编辑 README，然后：
-git add AinoteFFmpegKitIOS.podspec README.md
-git commit -m "Add AinoteFFmpegKitIOS podspec"
-git push origin main
+git add AinoteFFmpegKitIOS.podspec && git commit -m "Update podspec" && git push origin main
+# 回到主工程：pod update AinoteFFmpegKitIOS
 ```
 
 ## 换成自建 audio zip
