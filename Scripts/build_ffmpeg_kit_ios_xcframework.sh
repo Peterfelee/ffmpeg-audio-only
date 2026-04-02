@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# 在 pod 根目录执行：克隆 ffmpeg-kit v6.0，按「https」包（gmp+gnutls）打 iOS xcframework，输出到 Artifacts/。
-# 依赖：Xcode、Homebrew 等，见 README。首次构建需联网下载 FFmpeg 与各依赖源码，耗时较长。
+# 在 pod 根目录执行：克隆 ffmpeg-kit v6.0，按「仅本地媒体」取向打 iOS xcframework（等价官方 min：不启用 gmp/gnutls 等外链），输出到 Artifacts/。
+# 适合本地文件路径的转码/拼接；若要让 ffmpeg 直接打开 https URL，需改脚本加上 --enable-gmp --enable-gnutls。
+# 依赖：Xcode、Homebrew 等，见 README。首次构建需联网下载 FFmpeg 源码，耗时较长。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -34,12 +35,10 @@ if [[ ! -f "${UP}/ios.sh" ]]; then
   git clone --branch v6.0 --single-branch https://github.com/arthenica/ffmpeg-kit.git "${UP}"
 fi
 
-# 与官方「https」包一致：gmp、gnutls；xcframework。-x
-# 架构：默认仅 arm64 真机 + arm64 模拟器（Apple Silicon 开发机）。Intel Mac 模拟器需去掉 --disable-x86-64 并视情况关闭 arm64-simulator，见 README。
+# -x：xcframework。不追加 --enable-gmp/--enable-gnutls → 与官方 min 包同取向（无 TLS，仅本地/常规 demux）。
+# 架构：默认仅 arm64 真机 + arm64 模拟器。Intel Mac 模拟器见 README。
 IOS_FLAGS=(
   -x
-  --enable-gmp
-  --enable-gnutls
   --disable-armv7
   --disable-armv7s
   --disable-arm64e

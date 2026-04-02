@@ -6,9 +6,9 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AinoteFFmpegKitIOS'
-  s.version          = '6.0.0-source.1'
-  s.summary          = 'FFmpegKit iOS built from upstream ffmpeg-kit source (no prebuilt zip)'
-  s.description      = 'Clones arthenica/ffmpeg-kit at v6.0 during pod install, runs ios.sh (-x, https-equivalent gmp+gnutls), vendors resulting xcframeworks from Artifacts/.'
+  s.version          = '6.0.0-source.2'
+  s.summary          = 'FFmpegKit iOS from source (local audio/files; min-equivalent, no http zip)'
+  s.description      = 'Clones arthenica/ffmpeg-kit at v6.0 during pod install, runs ios.sh -x without gmp/gnutls (local media / min-style). For ffmpeg-side HTTPS inputs add those enables in the build script.'
   s.homepage         = 'https://github.com/Peterfelee/ffmpeg-audio-only'
   s.license          = { :type => 'LGPL-3.0' }
   s.author           = { 'Peterfelee' => 'https://github.com/Peterfelee' }

@@ -9,7 +9,9 @@ CocoaPods 库：**从 [arthenica/ffmpeg-kit](https://github.com/arthenica/ffmpeg
 - 构建输出复制到 `Pods/AinoteFFmpegKitIOS/Artifacts/*.xcframework`。
 - `.upstream/`、`Artifacts/` 已 `.gitignore`，**不进本仓库**；每位开发者 / CI 机器本地编译一次（或见下文跳过变量）。
 
-当前脚本使用的 `ios.sh` 参数等价官方 **https** 包（启用 **gmp、gnutls**），并默认只编 **arm64 设备 + arm64 模拟器**（适合 Apple Silicon Mac 开发）。若在 **Intel Mac** 上需要 **x86_64 模拟器**，请编辑脚本：去掉 `--disable-x86-64`，并按需调整模拟器架构（见 [Building](https://github.com/arthenica/ffmpeg-kit/wiki/Building)）。
+**取向（你说的「只要本地音频处理」）**：脚本使用 `./ios.sh -x` 且**不**启用 `gmp` / `gnutls`，与官方 **min** 包一致——适合**本地路径**的拼接、转码等；应用自己用 `URLSession` 下文件再交给 FFmpeg 即可。若将来要让 **ffmpeg 直接读 `https://` 输入**，在 `Scripts/build_ffmpeg_kit_ios_xcframework.sh` 的 `IOS_FLAGS` 里加上 `--enable-gmp` 与 `--enable-gnutls`。
+
+默认只编 **arm64 真机 + arm64 模拟器**。**Intel Mac** 需要 x86_64 模拟器时，编辑脚本去掉 `--disable-x86-64` 并视情况调整模拟器架构（见 [Building](https://github.com/arthenica/ffmpeg-kit/wiki/Building)）。
 
 ## 环境依赖
 
