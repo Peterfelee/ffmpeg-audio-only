@@ -1,17 +1,30 @@
 # ffmpeg-audio-only
 
-CocoaPods 库：**从 [arthenica/ffmpeg-kit](https://github.com/arthenica/ffmpeg-kit) v6.0 源码**在本地执行 `ios.sh` 生成 iOS **xcframework**，**不**通过 `:http` 下载预编译 zip。
+CocoaPods 库：**从内置的 `Sources/ffmpeg-kit-v6.0.zip`**（arthenica/ffmpeg-kit v6.0 源码）在本地执行 `ios.sh` 生成 iOS **xcframework**，**不**通过网络下载任何内容。
 
 ## 行为说明
 
 - `pod install` 时执行 `prepare_command` → `Scripts/build_ffmpeg_kit_ios_xcframework.sh`。
-- 在 `Pods/AinoteFFmpegKitIOS/.upstream/ffmpeg-kit` 克隆上游（仅首次或清理后）。
+- 脚本解压 `Sources/ffmpeg-kit-v6.0.zip` 到 `Sources/ffmpeg-kit-v6.0/`（已 `.gitignore`，仅首次或清理后解压）。
 - 构建输出复制到 `Pods/AinoteFFmpegKitIOS/Artifacts/*.xcframework`。
-- `.upstream/`、`Artifacts/` 已 `.gitignore`，**不进本仓库**；每位开发者 / CI 机器本地编译一次（或见下文跳过变量）。
+- `Sources/ffmpeg-kit-v6.0/`、`Artifacts/` 已 `.gitignore`，**不进本仓库**；`Sources/ffmpeg-kit-v6.0.zip` **进仓库**（约 25MB）。
 
-**取向（你说的「只要本地音频处理」）**：脚本使用 `./ios.sh -x` 且**不**启用 `gmp` / `gnutls`，与官方 **min** 包一致——适合**本地路径**的拼接、转码等；应用自己用 `URLSession` 下文件再交给 FFmpeg 即可。若将来要让 **ffmpeg 直接读 `https://` 输入**，在 `Scripts/build_ffmpeg_kit_ios_xcframework.sh` 的 `IOS_FLAGS` 里加上 `--enable-gmp` 与 `--enable-gnutls`。
+**取向（只要本地音频处理）**：脚本使用 `./ios.sh -x` 且**不**启用 `gmp` / `gnutls`，与官方 **min** 包一致——适合**本地路径**的拼接、转码等；应用自己用 `URLSession` 下载文件再交给 FFmpeg 即可。若将来要让 **ffmpeg 直接读 `https://` 输入**，在 `Scripts/build_ffmpeg_kit_ios_xcframework.sh` 的 `IOS_FLAGS` 里加上 `--enable-gmp` 与 `--enable-gnutls`。
 
 默认只编 **arm64 真机 + arm64 模拟器**。**Intel Mac** 需要 x86_64 模拟器时，编辑脚本去掉 `--disable-x86-64` 并视情况调整模拟器架构（见 [Building](https://github.com/arthenica/ffmpeg-kit/wiki/Building)）。
+
+## 初次添加 zip（仓库维护者操作，一次性）
+
+```bash
+mkdir -p Sources
+curl -L https://github.com/arthenica/ffmpeg-kit/archive/refs/tags/v6.0.zip \
+     -o Sources/ffmpeg-kit-v6.0.zip
+git add Sources/ffmpeg-kit-v6.0.zip
+git commit -m "chore: embed ffmpeg-kit v6.0 source zip"
+git push
+```
+
+> zip 约 25MB，低于 GitHub 单文件 100MB 限制，无需 Git LFS。提交前可用 `du -sh Sources/ffmpeg-kit-v6.0.zip` 确认。
 
 ## 环境依赖
 
@@ -33,7 +46,9 @@ pod 'AinoteFFmpegKitIOS', :git => 'https://github.com/Peterfelee/ffmpeg-audio-on
 
 若你已在 pod 目录内手动生成过 `Artifacts/` 下 8 个 xcframework，可临时：
 
-`SKIP_FFMPEG_KIT_BUILD=1 pod install`
+```bash
+SKIP_FFMPEG_KIT_BUILD=1 pod install
+```
 
 （用于调试；正常流程应依赖脚本完整构建。）
 
