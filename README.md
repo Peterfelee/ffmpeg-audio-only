@@ -6,7 +6,7 @@ CocoaPods 库：**从内置的 `Sources/ffmpeg-kit-v6.0.zip`**（arthenica/ffmpe
 
 - `pod install` 时执行 `prepare_command` → `Scripts/build_ffmpeg_kit_ios_xcframework.sh`。
 - 脚本解压 `Sources/ffmpeg-kit-v6.0.zip` 到 `Sources/ffmpeg-kit-v6.0/`（已 `.gitignore`，仅首次或清理后解压）。
-- 构建输出复制到 `Pods/AinoteFFmpegKitIOS/Artifacts/*.xcframework`。
+- 构建输出复制到 `Pods/FFmpegAudioKitIOS/Artifacts/*.xcframework`。
 - `Sources/ffmpeg-kit-v6.0/`、`Artifacts/` 已 `.gitignore`，**不进本仓库**；`Sources/ffmpeg-kit-v6.0.zip` **进仓库**（约 25MB）。
 
 **取向（只要本地音频处理）**：脚本使用 `./ios.sh -x` 且**不**启用 `gmp` / `gnutls`，与官方 **min** 包一致——适合**本地路径**的拼接、转码等；应用自己用 `URLSession` 下载文件再交给 FFmpeg 即可。若将来要让 **ffmpeg 直接读 `https://` 输入**，在 `Scripts/build_ffmpeg_kit_ios_xcframework.sh` 的 `IOS_FLAGS` 里加上 `--enable-gmp` 与 `--enable-gnutls`。
@@ -35,12 +35,12 @@ git push
 ## 主工程 Podfile
 
 ```ruby
-pod 'AinoteFFmpegKitIOS', :git => 'https://github.com/Peterfelee/ffmpeg-audio-only.git', :branch => 'main'
+pod 'FFmpegAudioKitIOS', :git => 'https://github.com/Peterfelee/ffmpeg-audio-only.git', :branch => 'main'
 ```
 
 ## 与 AINoteTaker 同步
 
-主工程目录 `ffmpeg-audio-only-publish/` 与本仓库应对齐；修改后复制到本仓库根目录并 `git push`，再在客户端执行 `pod update AinoteFFmpegKitIOS`。
+主工程目录 `ffmpeg-audio-only-publish/` 与本仓库应对齐；修改后复制到本仓库根目录并 `git push`，再在客户端执行 `pod update FFmpegAudioKitIOS`。
 
 ## 跳过构建（仅当 Artifacts 已存在）
 

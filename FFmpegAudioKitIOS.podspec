@@ -5,7 +5,7 @@
 # 不使用 :http zip，不依赖运行时网络。仓库：https://github.com/Peterfelee/ffmpeg-audio-only
 
 Pod::Spec.new do |s|
-  s.name             = 'AinoteFFmpegKitIOS'
+  s.name             = 'FFmpegAudioKitIOS'
   s.version          = '6.0.0-source.3'
   s.summary          = 'FFmpegKit iOS from embedded source zip (local audio/files; min-equivalent, fully offline build)'
   s.description      = 'Extracts bundled Sources/ffmpeg-kit-v6.0.zip during pod install, runs ios.sh -x without gmp/gnutls (local media / min-style). No network required at build time. For ffmpeg-side HTTPS inputs add those enables in the build script.'
@@ -46,6 +46,6 @@ Pod::Spec.new do |s|
   s.module_name = 'ffmpegkit'
 
   s.user_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '$(inherited) "${PODS_ROOT}/AinoteFFmpegKitIOS/Artifacts/ffmpegkit.xcframework/ios-arm64/ffmpegkit.framework/Headers" "${PODS_ROOT}/AinoteFFmpegKitIOS/Artifacts/ffmpegkit.xcframework/ios-arm64-simulator/ffmpegkit.framework/Headers"'
+    'HEADER_SEARCH_PATHS' => '$(inherited) "${PODS_ROOT}/FFmpegAudioKitIOS/Artifacts/ffmpegkit.xcframework/ios-arm64/ffmpegkit.framework/Headers" "${PODS_ROOT}/FFmpegAudioKitIOS/Artifacts/ffmpegkit.xcframework/ios-arm64-simulator/ffmpegkit.framework/Headers"'
   }
 end
